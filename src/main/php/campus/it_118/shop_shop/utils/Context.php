@@ -34,4 +34,13 @@ class Context {
   public static function clear(): void {
     self::$DATA = [];
   }
+
+  /**
+   * 
+   * @return array<string,mixed>
+   */
+  public static function getAll(): array {
+
+    return self::$DATA;
+  }
 }
