@@ -5,60 +5,64 @@ declare(strict_types=1);
 
 namespace campus\it_118\shop_shop\models;
 
+use campus\it_118\shop_shop\utils\Status;
+
 use \DateTime;
 use \DateTimeZone;
 
 abstract class User implements IEntity
 {
 
-  public readonly string $id;
-  public string $username;
-  public readonly DateTime $loggedInDateTime;
-  public readonly DateTime $registeredDateTime;
+  private readonly string $ID;
+  protected string $username;
+  protected readonly DateTime $LOGGED_IN_DATE_TIME;
+  protected readonly DateTime $REGISTERED_DATE_TIME;
 
   public function __construct(
     ?string $id = null,
     ?string $username = null,
-    DateTime|string|null $registeredDateTime = null,
-    DateTime|string|null $loggedInDateTime = null
+    DateTime|string|null $REGISTERED_DATE_TIME = null,
+    DateTime|string|null $LOGGED_IN_DATE_TIME = null
   ) {
-    $this->id = $id ?? "N/a";
+    $this->ID = !empty($id = trim($id??'')) 
+      ? $id : Status::unknown()->SYMBOL;
 
-    $this->username = $username ?? "N/a";
+    $this->username = !empty($username = trim($username??''))
+      ? $username : Status::unknown()->SYMBOL ;
 
     try {
-      $this->registeredDateTime = match (true) {
-        is_string($registeredDateTime)
+      $this->REGISTERED_DATE_TIME = match (true) {
+        is_string($REGISTERED_DATE_TIME)
         => new DateTime(
-          $registeredDateTime ?: "now",
+          $REGISTERED_DATE_TIME ?: "now",
           __DATE_TIME_ZONE
         ),
 
-        ($registeredDateTime instanceof DateTime)
-        => $registeredDateTime,
+        ($REGISTERED_DATE_TIME instanceof DateTime)
+        => $REGISTERED_DATE_TIME,
 
         default => throw new \Exception()
       };
     } catch (\Exception $e) {
-      $this->registeredDateTime = new DateTime(
+      $this->REGISTERED_DATE_TIME = new DateTime(
         "now", __DATE_TIME_ZONE
       );
     }
 
     try{
-      $this->loggedInDateTime = match (true) {
-        is_string($loggedInDateTime)
+      $this->LOGGED_IN_DATE_TIME = match (true) {
+        is_string($LOGGED_IN_DATE_TIME)
         => new DateTime(
-          $loggedInDateTime ?: "now",
+          $LOGGED_IN_DATE_TIME ?: "now",
           __DATE_TIME_ZONE
         ),
-        ($loggedInDateTime instanceof DateTime)
-        => $loggedInDateTime,
+        ($LOGGED_IN_DATE_TIME instanceof DateTime)
+        => $LOGGED_IN_DATE_TIME,
         default => throw new \Exception()
       };
     }
     catch( \Exception $exception ) {
-      $this->loggedInDateTime = new DateTime(
+      $this->LOGGED_IN_DATE_TIME = new DateTime(
         "now", __DATE_TIME_ZONE 
       );
     }
@@ -70,25 +74,25 @@ abstract class User implements IEntity
   public function getId(): string
   {
 
-    return $this->id;
+    return $this->ID;
   }
 
-  public function loggedInDateTime(): string
+  public function getLoggedInDateTime(): string
   {
 
-    return $this->loggedInDateTime->format("D, d M Y h:i:s a P T");
+    return $this->LOGGED_IN_DATE_TIME->format("D, d M Y h:i:s a P T");
   }
 
   public function __toString(): string {
 
     return strtr(
-      "<cannonicalName>@<hashCode>[id='<id>', registeredDateTime='<registeredDateTime>', loggedInDateTime='<loggedInDateTime>']",
+      "<cannonicalName>@<hashCode>[ID='<id>', REGISTERED_DATE_TIME='<registeredDateTime>', LOGGED_IN_DATE_TIME='<loggedInDateTime>']",
       [
         "<cannonicalName>" => \get_class($this),
         "<hashCode>" => \dechex($this->hashCode()),
-        "<id>" => $this->id,
-        "<registeredDateTime>" => $this->registeredDateTime->getTimestamp(),
-        "<loggedInDateTime>" => $this->loggedInDateTime()
+        "<id>" => $this->ID,
+        "<registeredDateTime>" => $this->REGISTERED_DATE_TIME->getTimestamp(),
+        "<loggedInDateTime>" => $this->getLoggedInDateTime()
       ]
     );
   }
@@ -96,9 +100,9 @@ abstract class User implements IEntity
   public function hashCode(): int {
 
     return \crc32( 
-        $this->id 
+        $this->ID 
       . $this->username 
-      . $this->registeredDateTime->getTimestamp() 
+      . $this->REGISTERED_DATE_TIME->getTimestamp() 
     );
   }
 
@@ -107,8 +111,8 @@ abstract class User implements IEntity
     if( !($obj instanceof self) )
       return false;
     
-    return $obj->id === $this->id 
+    return $obj->ID === $this->ID 
       && $obj->username === $this->username
-      && $obj->registeredDateTime->getTimestamp() === $this->registeredDateTime->getTimestamp();
+      && $obj->REGISTERED_DATE_TIME->getTimestamp() === $this->REGISTERED_DATE_TIME->getTimestamp();
   }
 }
