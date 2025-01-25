@@ -1,0 +1,22 @@
+{
+    "name": "campus.it_118/shop-shop",
+    "description": "simple e-commerce.",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "campus\\it_118\\shop_shop\\": "src/main/php/campus/it_118/shop_shop/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "campus\\it_118\\shop_shp\\test": "src/test/php/campus/it_118/shop_shop/test/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Jayo, A. R."
+        }
+    ],
+    "require": {}
+}

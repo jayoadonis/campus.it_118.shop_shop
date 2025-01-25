@@ -1,0 +1,16 @@
+.vscode/
+.idea/
+.vs/
+vscode/
+vs/
+idea/
+
+build/
+out*/
+dist*/
+dest*/
+
+vendor/
+
+.env*
+!env.public-dev*
