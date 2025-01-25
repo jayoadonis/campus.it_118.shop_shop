@@ -4,18 +4,10 @@ declare(strict_types=1);
 
 require_once __DIR__ . "/src/main/php/campus/it_118/shop_shop/prefetch.php";
 
+use campus\it_118\shop_shop\controllers\routes\RouteV0;
+
+include __VIEWS_DIR . "/dashboard_view.php";
+
+
+
 echo "done";
-?>
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><?=__PROJECT_NAME?></title>
-</head>
-<body>
-  
-</body>
-</html>

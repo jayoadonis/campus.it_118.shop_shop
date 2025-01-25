@@ -22,5 +22,13 @@ define(
   realpath( __PROJECT_DIR . "/src/main/resources" )
 );
 
+define(
+  "__VIEWS_DIR",
+  realpath( __PROJECT_DIR . "/src/main/php/campus/it_118/shop_shop/views" )
+);
+
 
 require_once __PROJECT_DIR . "/vendor/autoload.php";
+
+
+$_content = "<h1>Content not found</h1>";
