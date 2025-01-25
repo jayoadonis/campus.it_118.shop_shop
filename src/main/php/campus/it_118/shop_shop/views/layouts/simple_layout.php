@@ -1,3 +1,6 @@
+<?php
+declare(strict_types=1);
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,12 +10,8 @@
   <title><?=__PROJECT_NAME?></title>
 </head>
 <body>
-  <header>
-    <h1>Header...</h1>
-  </header>
+  <?php include __VIEWS_DIR . "/components/header_component.php"?>
   <?=$_content?>
-  <footer>
-    <h1>Footer...</h1>
-  </footer>
+  <?php include __VIEWS_DIR . "/components/footer_component.php"?>
 </body>
 </html>
