@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+
 namespace campus\it_118\shop_shop;
 
 define( "__PROJECT_NAME", "Shop Shop 0.0.0" );
@@ -27,6 +28,10 @@ define(
   realpath( __PROJECT_DIR . "/src/main/php/campus/it_118/shop_shop/views" )
 );
 
+define(
+  "__DATE_TIME_ZONE",
+  (new \DateTimeZone("Asia/Manila"))
+);
 
 require_once __PROJECT_DIR . "/vendor/autoload.php";
 
