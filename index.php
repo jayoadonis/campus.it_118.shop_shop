@@ -10,19 +10,28 @@ include __VIEWS_DIR . "/dashboard_view.php";
 
 use campus\it_118\shop_shop\models\StarterUser;
 use campus\it_118\shop_shop\utils\Status;
+use campus\it_118\shop_shop\models\ObjectI;
 
 $s = new StarterUser();
 // \usleep(1_000_000);
 $a = new StarterUser();
 
-echo $s->getLoggedInDateTime() . "</br>";
+// echo $s->getLoggedInDateTime() . "</br>";
 
 echo $s . "</br>";
 echo $a . "</br>";
 
-echo $a->equals($s) . "</br>";
+// echo $a->equals($s) . "</br>";
 
 
-echo Status::approved()->DESCRIPTION;
+// echo Status::approved()->DESCRIPTION;
+
+
+$x = new ObjectI();
+$y = new ObjectI();
+
+
+echo $x . "</br>";
+echo $y . "</br>";
 
 echo "done";

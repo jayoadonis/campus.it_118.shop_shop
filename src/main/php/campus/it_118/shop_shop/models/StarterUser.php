@@ -10,6 +10,12 @@ class StarterUser extends User {
     ?string $id = null
   ) {
     parent::__construct($id);
+    
+    echo "<pre>";
+    var_dump($this);
+    echo "</pre>";
+    echo "<> " . \spl_object_id($this) . "</br>";
+    echo "<> " . \spl_object_hash($this) . "</br>";
   }
 
   public static function what(): void {

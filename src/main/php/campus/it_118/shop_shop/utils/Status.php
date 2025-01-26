@@ -39,4 +39,9 @@ final class Status
     public function __wakeup() { 
       throw new \Exception("Cannot unserialize Status"); 
     }
+
+    public function __toString(): string {
+
+      return $this->SYMBOL;
+    }
 }
