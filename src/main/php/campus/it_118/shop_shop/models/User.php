@@ -106,7 +106,7 @@ abstract class User extends ObjectI implements IEntity
   }
 
   /**
-   * @Override
+   * @Override campus\it_118\shop_shop\models\ObjectI.php
    * @method hashCode(void):int
    * @return int
    */
