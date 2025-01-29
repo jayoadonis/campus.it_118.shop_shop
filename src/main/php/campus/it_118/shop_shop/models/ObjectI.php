@@ -10,7 +10,7 @@ class ObjectI {
     return strtr(
       "<cN>@<hC>",
       [
-        "<cN>" => \get_class($this),
+        "<cN>" => self::class,
         "<hC>" => \sprintf("%08x", $this->hashCode())
       ]
     );

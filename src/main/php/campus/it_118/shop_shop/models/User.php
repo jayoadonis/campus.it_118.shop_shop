@@ -106,7 +106,7 @@ abstract class User extends ObjectI implements IEntity
   }
 
   /**
-   * @Override campus\it_118\shop_shop\models\ObjectI.php
+   * @inheritDoc ObjectI::hashCode(V)I
    * @method hashCode(void):int
    * @return int
    */
@@ -121,8 +121,10 @@ abstract class User extends ObjectI implements IEntity
 
   /**
    * @Override
-   * @param \campus\it_118\shop_shop\models\ObjectI $obj
+   * @param ObjectI $obj
    * @return bool
+   * 
+   * @see campus\it_118\shop_shop\models\ObjectI::equals()
    */
   public function equals( ObjectI $obj ): bool {
     if( $obj === $this ) return true;
@@ -133,4 +135,5 @@ abstract class User extends ObjectI implements IEntity
       && $obj->username === $this->username
       && $obj->REGISTERED_DATE_TIME->getTimestamp() === $this->REGISTERED_DATE_TIME->getTimestamp();
   }
+
 }

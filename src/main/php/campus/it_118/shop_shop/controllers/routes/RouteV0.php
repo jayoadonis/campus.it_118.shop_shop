@@ -9,7 +9,7 @@ class RouteV0 extends ObjectI {
   
   /**
    * 
-   * @var array< string, array<string, mixed> >
+   * @var array<string,array<string,mixed>>
    */
   private array $routes;
 
@@ -19,12 +19,13 @@ class RouteV0 extends ObjectI {
     callable|array $handler
   ): bool {
 
-    if( isset($this->routes[$method][$path]) )
-      return false;
+    if( ! isset($this->routes[$method][$path]) ) {
 
-    $this->routes[$method][$path] = $handler;
+      $this->routes[$method][$path] = $handler;
+      return true;
+    }
 
-    return true;
+    return false;
   }
 
   /**
@@ -33,22 +34,22 @@ class RouteV0 extends ObjectI {
    * @param string $method
    * @param string $path
    * @param callable|array $handler
-   * @return array<string, array<string, mixed>> previous route, if not set return empty array
+   * @return array|callable|null 
    */
   public function set(
     string $method,
     string $path,
     callable|array $handler
-  ): array {
-
-    $prevRoute = $this->routes[$method][$path];
-
-    if( !isset($prevRoutes) )
-      $prevRoute = [];
+  ): array|callable|null {
+    
+    /**
+     * @var array|callable|null
+     */
+    $prevHandler = $this->routes[$method][$path] ?? null;
 
     $this->routes[$method][$path] = $handler;
 
-    return $prevRoute;
+    return $prevHandler;
   }
 
   public function getCurrentURI(): string {
@@ -62,7 +63,7 @@ class RouteV0 extends ObjectI {
 
   private static function normalizedURI( string &$uri ): void {
 
-    $uri = \rtrim(\ltrim($uri, '/'), '/') ?: '/';
+    $uri = \rtrim(\ltrim($uri, ' \n\r\t/'),  ' \n\r\t/') ?: '/';
 
     return;
   }

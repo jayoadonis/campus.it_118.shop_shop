@@ -4,34 +4,26 @@ declare(strict_types=1);
 
 require_once __DIR__ . "/src/main/php/campus/it_118/shop_shop/prefetch.php";
 
-use campus\it_118\shop_shop\controllers\routes\RouteV0;
+use campus\it_118\shop_shop\controllers\DashboardController;
+use campus\it_118\shop_shop\controllers\HomeController;
+use campus\it_118\shop_shop\controllers\routes\RouterVI;
 
-include __VIEWS_DIR . "/dashboard_view.php";
-
-use campus\it_118\shop_shop\models\StarterUser;
-use campus\it_118\shop_shop\utils\Status;
-use campus\it_118\shop_shop\models\ObjectI;
-
-$s = new StarterUser();
-// \usleep(1_000_000);
-$a = new StarterUser();
-
-// echo $s->getLoggedInDateTime() . "</br>";
-
-echo $s . "</br>";
-echo $a . "</br>";
-
-// echo $a->equals($s) . "</br>";
+// include __VIEWS_DIR . "/dashboard_view.php";
 
 
-// echo Status::approved()->DESCRIPTION;
+$routerVI = new RouterVI();
+
+$routerVI->add('GET', "/", [HomeController::class, "index"]);
+$routerVI->add('GET', "/{id}", [HomeController::class, "index"]);
+$routerVI->add('GET', "/dashboard", [DashboardController::class, "index"]);
+$routerVI->add('GET', "/dashboard/{id}", [DashboardController::class, "index"]);
+$routerVI->add('GET', "/dashboard/{id}/{verb}", [DashboardController::class, "index"]);
 
 
-$x = new ObjectI();
-$y = new ObjectI();
+// $METHOD = $_SERVER["REQUEST_METHOD"];
+// $REQUEST_URI = $routerVI->getCurrentURI();
 
+// $routerVI->dispatch( $METHOD, $REQUEST_URI );
 
-echo $x . "</br>";
-echo $y . "</br>";
-
+$routerVI->dispatch();
 echo "done";
