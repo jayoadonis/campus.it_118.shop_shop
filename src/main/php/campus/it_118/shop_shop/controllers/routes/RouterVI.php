@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace campus\it_118\shop_shop\controllers\routes;
 
 use campus\it_118\shop_shop\models\ObjectI;
+use campus\it_118\shop_shop\utils\routes\RouterDuplicationException;
 
 class RouteData extends ObjectI 
 {
@@ -55,7 +56,7 @@ class RouterVI extends ObjectI {
     return false;
   }
 
-  public function match(
+  public function getRouteData(
     string $method,
     string $requestURI
   ): ?RouteData {
@@ -100,7 +101,7 @@ class RouterVI extends ObjectI {
     // string $requestURI
   ): mixed {
 
-    $routeData = $this->match(
+    $routeData = $this->getRouteData(
       $_SERVER["REQUEST_METHOD"], $this->getCurrentURI()
     );
 
@@ -139,5 +140,21 @@ class RouterVI extends ObjectI {
   protected static function normalizedURI(string &$uri): void 
   {
       $uri = "/".\rtrim(\ltrim($uri, " \n\r\t/"), " \n\r\t/");
+  }
+
+  /**
+   * Summary of get
+   * @param string $path
+   * @param callable|array|null $handler
+   * @throws \campus\it_118\shop_shop\utils\routes\RouterDuplicationException
+   * @return void
+   */
+  public function get(
+    string $path,
+    callable|array|null $handler
+  ): void {
+
+    if( ! $this->add( "GET", $path, $handler ) ) 
+      throw new RouterDuplicationException();
   }
 }
