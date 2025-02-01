@@ -5,6 +5,10 @@ namespace campus\it_118\shop_shop\models;
 
 class ObjectI {
 
+  public function __construct() {
+    
+  }
+
   public function __toString(): string {
 
     return strtr(

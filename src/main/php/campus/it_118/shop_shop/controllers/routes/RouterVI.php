@@ -5,6 +5,9 @@ namespace campus\it_118\shop_shop\controllers\routes;
 
 use campus\it_118\shop_shop\models\ObjectI;
 use campus\it_118\shop_shop\utils\routes\RouterDuplicationException;
+use campus\it_118\shop_shop\controllers\Controller;
+use campus\it_118\shop_shop\models\Layout;
+use campus\it_118\shop_shop\views\layouts\SimpleLayout;
 
 class RouteData extends ObjectI 
 {
@@ -33,7 +36,9 @@ class RouterVI extends ObjectI {
    */
   private array $routes = [];
 
-  public function __construct() {
+  public function __construct(
+    private readonly Layout $LAYOUT
+  ) {
    
   }
 
@@ -116,11 +121,28 @@ class RouterVI extends ObjectI {
     if( is_callable($handler) ) {
       return call_user_func($handler, $routeData);
     }
-    elseif(is_array($handler) && count($handler) === 2) {
-      [$class, $method] = $handler;
+    elseif(is_array($handler) && count($handler) >= 1 ) {
+      
+      [$class] = $handler;
 
-      if( class_exists($class) && method_exists($class, $method) ) {
-        return call_user_func([new $class, $method], $routeData);
+      if( class_exists($class) ) {
+        
+        if( is_subclass_of($class, Controller::class) ) {
+
+          $controller = new $class($routeData);
+
+          if( $controller instanceof Controller ) {
+
+            echo $this->LAYOUT->setOutlet($controller->render())->render();
+          }
+
+          return true;
+        }
+        
+        [$class, $method] = $handler;
+
+        if( method_exists($class, $method) )
+          return call_user_func([new $class, $method], $routeData);
       }
 
     }
