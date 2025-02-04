@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace campus\it_118\shop_shop\models;
 
-class ObjectI {
+class ObjectI implements IEntity {
 
   public function __construct() {
     
@@ -14,7 +14,7 @@ class ObjectI {
     return strtr(
       "<cN>@<hC>",
       [
-        "<cN>" => self::class,
+        "<cN>" => $this::class,
         "<hC>" => \sprintf("%08x", $this->hashCode())
       ]
     );
@@ -33,5 +33,10 @@ class ObjectI {
     return $obj === $this;
   }
 
+  #[\Override]
+  public function getId(): string {
+
+    return sprintf("%x", $this->hashCode());
+  }
 
 }

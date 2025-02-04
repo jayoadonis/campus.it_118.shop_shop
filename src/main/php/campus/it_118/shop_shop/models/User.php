@@ -5,12 +5,13 @@ declare(strict_types=1);
 
 namespace campus\it_118\shop_shop\models;
 
+use campus\it_118\shop_shop\utils\AccountStatus;
 use campus\it_118\shop_shop\utils\Status;
 
 use \DateTime;
 use \DateTimeZone;
 
-abstract class User extends ObjectI implements IEntity
+abstract class User extends ObjectI
 {
 
   private readonly string $ID;
@@ -18,9 +19,12 @@ abstract class User extends ObjectI implements IEntity
   protected readonly DateTime $LOGGED_IN_DATE_TIME;
   protected readonly DateTime $REGISTERED_DATE_TIME;
 
+  public readonly AccountStatus $ACCOUNT_STATUS;
+
   public function __construct(
     ?string $id = null,
     ?string $username = null,
+    ?AccountStatus $accountStatus = null,
     DateTime|string|null $REGISTERED_DATE_TIME = null,
     DateTime|string|null $LOGGED_IN_DATE_TIME = null
   ) {
@@ -29,6 +33,8 @@ abstract class User extends ObjectI implements IEntity
 
     $this->username = !empty($username = trim($username??''))
       ? $username : Status::unknown()->SYMBOL ;
+
+    $this->ACCOUNT_STATUS = $accountStatus ?? AccountStatus::unknown();
 
     try {
       $this->REGISTERED_DATE_TIME = match (true) {
@@ -43,7 +49,7 @@ abstract class User extends ObjectI implements IEntity
 
         default => throw new \Exception()
       };
-    } catch (\Exception $e) {
+    } catch (\Exception $exception) {
       $this->REGISTERED_DATE_TIME = new DateTime(
         "now", __DATE_TIME_ZONE
       );
@@ -93,11 +99,12 @@ abstract class User extends ObjectI implements IEntity
 
     return strtr(
       "<cN>@<hC>"
-      ."[ID='<id>', REGISTERED_DATE_TIME='<registeredDateTime>', LOGGED_IN_DATE_TIME='<loggedInDateTime>']",
+      ."[ID='<id>', ACCOUNT_STATUS='<accountStatus>', REGISTERED_DATE_TIME='<registeredDateTime>', LOGGED_IN_DATE_TIME='<loggedInDateTime>']",
       [
-        "<cN>" => \get_class($this),
-        "<hC>" => \sprintf("%08x", $this->hashCode()),
+        "<cN>" => $this::class,
+        "<hC>" => parent::getId(),
         "<id>" => $this->ID,
+        "<accountStatus>" => $this->ACCOUNT_STATUS->VALUE,
         "<registeredDateTime>" => 
           $this->REGISTERED_DATE_TIME->getTimestamp(),
         "<loggedInDateTime>" => $this->getLoggedInDateTime()

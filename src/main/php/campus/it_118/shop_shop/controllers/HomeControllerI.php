@@ -5,13 +5,16 @@ namespace campus\it_118\shop_shop\controllers;
 use campus\it_118\shop_shop\controllers\routes\RouteData;
 use campus\it_118\shop_shop\utils\Context;
 use campus\it_118\shop_shop\controllers\Controller;
+use campus\it_118\shop_shop\models\Layout;
+use campus\it_118\shop_shop\views\HomeView;
 
 class HomeControllerI extends Controller {
 
   public function __construct(
+    ?Layout $layout = null,
     RouteData $routeData
   ) {
-    parent::__construct($routeData);
+    parent::__construct($layout, $routeData);
 
   }
 
@@ -30,8 +33,9 @@ class HomeControllerI extends Controller {
     ?>
 
     <div id="<?=$this->hashCode()?>">
-      <h1>Home View I</h1>
-      <h1><?=$this->ROUTE_DATA->params["verb"]??"N/a"?></h1>
+      <?php
+        echo (new HomeView($this))->render();
+      ?>
     </div>
 
     <?php

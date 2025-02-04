@@ -5,11 +5,15 @@ namespace campus\it_118\shop_shop\controllers;
 
 use campus\it_118\shop_shop\controllers\routes\RouteData;
 use campus\it_118\shop_shop\models\IRenderer;
+use campus\it_118\shop_shop\models\Layout;
 use campus\it_118\shop_shop\models\ObjectI;
 
 abstract class Controller extends ObjectI implements IRenderer {
 
-  public function __construct( public readonly RouteData $ROUTE_DATA) {
+  public function __construct( 
+    public readonly ?Layout $LAYOUT,
+    public readonly RouteData $ROUTE_DATA
+  ) {
     parent::__construct();
   }
   public abstract function render(): string;

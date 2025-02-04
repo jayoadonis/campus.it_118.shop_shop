@@ -1,21 +1,39 @@
 <?php
 declare(strict_types=1);
 
-$id = $routeData->params["id"]?? "N/a";
-$verb = $routeData->params["verb"]?? "N/a";
-\ob_start();
-?>
+namespace campus\it_118\shop_shop\views;
 
+use campus\it_118\shop_shop\controllers\Controller;
+use campus\it_118\shop_shop\models\View;
 
-<div id="home-view">
-  <h1>Home View...</h1>
-  <h3><?=$id?></h3>
-  <h3><?=$verb?></h3>
-</div>
+class HomeView extends View {
 
+  public function __construct( Controller $controller) {
 
-<?php
-$_content = \ob_get_clean();
+    parent::__construct($controller);
+  }
 
-include __VIEWS_DIR . "/layouts/simple_layout.php";
-?>
+  /**
+   * @inheritDoc campus\it_118\shop_shop\models\IRenderer::render()
+   * 
+   */
+  #[\Override]
+  public function render(): string {
+    
+    $routeData = $this->controller->ROUTE_DATA;
+
+    ob_start();
+    ?>
+
+    <div id="<?=$this->hashCode()?>">
+      <h1>HomeView... II</h1>
+      <h1><?=$routeData?></h1>
+      <h1><?=$this->controller->LAYOUT->title?></h1>
+      <a href="/dashboard">click it!</a>
+      <a href="/dashboard/1024">click now!</a>
+    </div>
+
+    <?php
+    return ob_get_clean();
+  }
+}

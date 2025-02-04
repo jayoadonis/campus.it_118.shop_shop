@@ -4,14 +4,18 @@ declare(strict_types=1);
 namespace campus\it_118\shop_shop\models;
 
 use campus\it_118\shop_shop\models\IRenderer;
+use campus\it_118\shop_shop\utils\Status;
 
 abstract class Layout extends ObjectI implements IRenderer {
   
 
   public function __construct(
+    public ?string $title = null,
     protected ?string $outlet = null
-  ) {
+  ) { 
     parent::__construct();
+
+    $this->title ??= Status::unknown()->SYMBOL;
   }
 
   public function toString(): string {
