@@ -8,7 +8,6 @@ use campus\it_118\shop_shop\models\ObjectI;
 use campus\it_118\shop_shop\utils\routes\RouterDuplicationException;
 use campus\it_118\shop_shop\controllers\Controller;
 use campus\it_118\shop_shop\models\Layout;
-use campus\it_118\shop_shop\views\layouts\SimpleLayout;
 
 class RouteData extends ObjectI
 {
@@ -29,8 +28,18 @@ class RouteData extends ObjectI
   public function __toString(): string
   {
 
+    if (is_callable($this->HANDLER)) {
+      $handler = new \ReflectionFunction($this->HANDLER ?: function () {});
+    } elseif (is_array($this->HANDLER)) {
+      $handler = implode(", ", array_map(static fn($value) => strval($value), $this->HANDLER));
+    } elseif (is_null($this->HANDLER)) {
+      $handler = "NULL";
+    } else {
+      $handler = "Invalid type";
+    }
+
     return strtr(
-      "<parentToString>[METHOD='<m>', PATH='<p>', params=[<params>]]",
+      "<parentToString>[METHOD='<m>', PATH='<p>', params=[<params>], HANDLER=<handler>]",
       [
         "<parentToString>" => parent::__toString(),
         "<m>" => $this->METHOD,
@@ -42,7 +51,8 @@ class RouteData extends ObjectI
           },
           array_keys($this->params),
           $this->params
-        ))
+        )),
+        "<handler>" => $handler
       ]
     );
   }
@@ -53,9 +63,7 @@ class RouterVI extends ObjectI
 {
 
   /**
-   * @var array<
-   *  string, array<string, RouteData>
-   * > 
+   * @var array< string, array<string, RouteData> > 
    */
   private array $routes = [];
 
@@ -115,9 +123,6 @@ class RouterVI extends ObjectI
 
         $routeData->params = $params;
 
-        echo "<pre>";
-        print_r($routeData);
-        echo "</pre>";
         return $routeData;
       }
     }
@@ -136,16 +141,36 @@ class RouterVI extends ObjectI
       $this->getCurrentURI()
     );
 
-    if (! $routeData) {
-      http_response_code(404);
-      echo "404 Not Found!";
-      exit();
+    if (!$routeData) {
+      // throw new \Exception("...");
+      // echo "404 Not Found!";
+
+      // http_response_code(404);
+      
+      try {
+        $this->setPageNotFound(function () {
+          return <<<HTML
+          <div id="page-not-found">
+            <h1>Page Not Found</h1>
+          </div>
+          HTML;
+        });
+      }
+      catch( \Exception $ex ) {
+
+      }
+
+      header("location: /404", false, 404);
+      $routeData = $this->getRouteData(
+        "GET",
+        "/404"
+      );
     }
 
     $handler = $routeData->HANDLER;
 
     if (is_callable($handler)) {
-      return call_user_func($handler, $routeData);
+        echo $this->LAYOUT->setOutlet( call_user_func($handler, $routeData) )->render();
     } elseif (is_array($handler) && count($handler) >= 1) {
 
       [$class] = $handler;
@@ -201,7 +226,7 @@ class RouterVI extends ObjectI
   ): void {
 
     if (! $this->add("GET", $path, $handler))
-      throw new RouterDuplicationException();
+      throw new RouterDuplicationException($path);
   }
 
   public function post(
@@ -210,6 +235,34 @@ class RouterVI extends ObjectI
   ): void {
 
     if (! $this->add("POST", $path, $handler))
-      throw new RouterDuplicationException();
+      throw new RouterDuplicationException($path);
+  }
+
+  public function setPageNotFound(
+    callable|array|null $handler
+  ): void {
+
+    $this->get("/404", $handler);
+  }
+
+
+  /**
+   * Summary of getRoutes
+   * @return array< string, array< string, RouteData> >
+   */
+  public function getRoutes(): array
+  {
+
+    //REM: Shallow copy.
+    // return $this->routes;
+
+    //REM: Shallow clone.
+    return array_map(
+      static fn($methods) => array_map(
+        static fn($path) => clone $path,
+        $methods
+      ),
+      $this->routes
+    );
   }
 }

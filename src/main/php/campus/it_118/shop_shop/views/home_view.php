@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 $id = $routeData->params["id"]?? "N/a";
 $verb = $routeData->params["verb"]?? "N/a";
+
+
 \ob_start();
 ?>
 

@@ -1,0 +1,17 @@
+
+@import url("./commons/header_component.css");
+
+body {
+  background-color: limegreen;
+  display: flex;
+  flex-direction: column;
+}
+
+#page-not-found {
+  background: #FFFF0F;
+}
+
+#page-not-found h1 {
+  color: #FF0055;
+}
+

@@ -6,6 +6,7 @@ use campus\it_118\shop_shop\controllers\routes\RouteData;
 use campus\it_118\shop_shop\utils\Context;
 use campus\it_118\shop_shop\controllers\Controller;
 use campus\it_118\shop_shop\models\Layout;
+use campus\it_118\shop_shop\models\renders\CSS;
 use campus\it_118\shop_shop\views\HomeView;
 
 class HomeControllerI extends Controller {
@@ -18,7 +19,7 @@ class HomeControllerI extends Controller {
 
   }
 
-  public function render(): string {
+  public function render(?CSS $css = null): string {
 
     // $verb = $this->ROUTE_DATA->params["verb"]??"N/a";
 
@@ -34,7 +35,10 @@ class HomeControllerI extends Controller {
 
     <div id="<?=$this->hashCode()?>">
       <?php
-        echo (new HomeView($this))->render();
+        echo (new HomeView($this))->render(
+          $css ??
+          new CSS( __SHOP_SHOP_MAIN_REZ_DIR . "/css/home_view.css")
+        );
       ?>
     </div>
 

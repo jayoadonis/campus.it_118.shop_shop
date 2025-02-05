@@ -7,7 +7,7 @@ namespace campus\it_118\shop_shop\views\layouts;
 use campus\it_118\shop_shop\models\Layout;
 use campus\it_118\shop_shop\models\renders\CSS;
 
-class SimpleLayout extends Layout
+class DashboardLayout extends Layout
 {
 
   //REM: property CSS for render...
@@ -39,14 +39,15 @@ class SimpleLayout extends Layout
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title><?= $this->title ?></title>
       <link rel="stylesheet" href="<?=__SHOP_SHOP_MAIN_REZ_DIR."/css/global.css"?>">
-      <link rel="stylesheet" href="<?=$css??$this->srcCSS?->flush(true)??''?>">
-
+      <style>
+        <?=($css && $css->flush()??"")?>
+      </style>
     </head>
 
     <body>
       <?php require_once(__VIEWS_DIR . "/components/header_component.php") ?>
       <div id="<?= $id ?>">
-        <h1>SimpleLayout</h1>
+        <h1>DashboardLayout....</h1>
         <?= $this->outlet ?>
       </div>
       <?php require_once(__VIEWS_DIR . "/components/footer_component.php") ?>

@@ -7,6 +7,7 @@ use campus\it_118\shop_shop\controllers\routes\RouteData;
 use campus\it_118\shop_shop\models\IRenderer;
 use campus\it_118\shop_shop\models\Layout;
 use campus\it_118\shop_shop\models\ObjectI;
+use campus\it_118\shop_shop\models\renders\CSS;
 
 abstract class Controller extends ObjectI implements IRenderer {
 
@@ -16,5 +17,5 @@ abstract class Controller extends ObjectI implements IRenderer {
   ) {
     parent::__construct();
   }
-  public abstract function render(): string;
+  public abstract function render(?CSS $css = null): string;
 }

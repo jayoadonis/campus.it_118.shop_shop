@@ -67,4 +67,9 @@ class RouteV0 extends ObjectI {
 
     return;
   }
+
+  public function dispatch(): void {
+
+    echo "where....";
+  }
 }

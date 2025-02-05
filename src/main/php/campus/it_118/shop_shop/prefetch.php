@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 
 namespace campus\it_118\shop_shop;
+use campus\it_118\shop_shop\utils\SimpleBaseDir;
 
 define( "__PROJECT_NAME", "Shop Shop 0.0.0" );
 define( 
@@ -20,7 +21,7 @@ define(
 );
 define(
   "__MAIN_RESOURCES_DIR", 
-  realpath( __PROJECT_DIR . "/src/main/resources" )
+  realpath( __PROJECT_DIR . "/src/main/resources/campus/it_118/shop_shop/rez" )
 );
 
 define(
@@ -37,3 +38,12 @@ require_once __PROJECT_DIR . "/vendor/autoload.php";
 
 
 $_content = "<h1>Content not found</h1>";
+
+$simpleBaseDir 
+  = new SimpleBaseDir( __DIR__ . "/../../../../../.." );
+
+define( 
+  "__SHOP_SHOP_MAIN_REZ_DIR", 
+  $simpleBaseDir->baseDirWith( "/src/main/resources/campus/it_118/shop_shop/rez" ) 
+);
+
